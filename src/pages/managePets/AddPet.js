@@ -16,7 +16,6 @@ const AddPets = () => {
             }).then(() => {
                 history.replace('/');
             }
-
             )
             ;
     }

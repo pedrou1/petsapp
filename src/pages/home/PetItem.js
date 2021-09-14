@@ -1,28 +1,57 @@
-import "../../bootstrap.min.css";
 import { Link } from "react-router-dom";
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme) => ({
+    
+    card: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    cardMedia: {
+      paddingTop: '56.25%',
+    },
+    cardContent: {
+      flexGrow: 1,
+    },
+  }));
 
 const PetItem = (props) => {
-    return ( 
-<main>
-        <div class="container-fluid bg-trasparent my-4 p-3">
-            <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
-                
-                <div class="col">
-                    <div class="card h-100 shadow-sm"> <img src={props.photo} class="card-img-top" alt="..." />
-                        <div class="card-body">
-                            <div class="clearfix mb-3"> </div>
-                            <h5 class="card-title">{props.category}</h5>
-                            Age: {props.age}
-                            <div class="text-center my-4"> <Link to={`/pet/${props.id}`}><a href="#" class="btn btn-warning">Details</a></Link> </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </main>
-     );
-}
- 
-export default PetItem;
 
+  const classes = useStyles();
+
+    return (
+        <Grid item key={props.id} xs={12} sm={6} md={4}>
+            <Card className={classes.card}>
+                <CardMedia
+                    className={classes.cardMedia}
+                    image={props.photo}
+                    title="Image title"
+                />
+                <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        {props.category}
+                    </Typography>
+                    <Typography>
+                        Age: {props.age}
+                    </Typography>
+                </CardContent>
+                <CardActions style={{ justifyContent: 'center' }}>
+                    <Link to={`/pet/${props.id}`}  style={{ textDecoration: 'none' }}><Button size="small" variant="outlined" color="primary">
+                        View
+                    </Button></Link>
+                </CardActions>
+            </Card>
+        </Grid>
+    );
+}
+
+export default PetItem;
