@@ -1,3 +1,5 @@
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 import {
   Button,
   CssBaseline,
@@ -7,8 +9,6 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-import { useRef } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,26 +30,40 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 8
       },
   }));
+
+const validationSchema = yup.object({
+  name: yup
+    .string('Enter your name')
+    .min(4, 'Name should be of minimum 4 characters length')
+    .required('Name is required'),
+    category: yup.string('Enter your category')
+    .min(4, 'Category should be of minimum 4 characters length')
+    .required('Category is required'),
+    age: yup.number().typeError("Age must be a number")
+  .positive("Age can't be negative")
+  .integer("Age can't include a decimal point")
+  .required('Age is required'),
+  photo: yup.string("Enter your Photo").url("Photo must be a url").required('Photo is required'),
+  
+});
   
 const AddPetForm = (props) => {
-    
-    const nameRef = useRef();
-    const categoryRef = useRef();
-    const ageRef = useRef();
-    const photoRef = useRef();
 
-    function submitHandler(e) {
-     e.preventDefault(); // prevent reload
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      category: '',
+      age: '',
+      photo:''
 
-        const petData = {
-            name: nameRef.current.value,
-            age: ageRef.current.value,
-            category: categoryRef.current.value,
-            photo: photoRef.current.value
-        };
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
-        props.onAddPet(petData);
-    }
+    // props.onAddPet(petData);
 
     const classes = useStyles();
 
@@ -60,31 +74,30 @@ const AddPetForm = (props) => {
           <Typography component="h1" variant="h5">
             Add Pet
           </Typography>
-           <form className={classes.form} onSubmit={submitHandler}> {/* noValidate */}
+           <form className={classes.form} onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                inputRef={nameRef}
                 InputLabelProps={{
                     classes: {
                       root: classes.label
                     }
                   }}
-                  autoComplete="name"
                   name="name"
                   variant="outlined"
-                  required
                   fullWidth
                   id="name"
                   label="Name"
                   autoFocus
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                 inputRef={categoryRef}
                   variant="outlined"
-                  required
                   fullWidth
                   id="category"
                   label="Category"
@@ -95,14 +108,16 @@ const AddPetForm = (props) => {
                       root: classes.label
                     }
                   }}
+                  value={formik.values.category}
+                  onChange={formik.handleChange}
+                  error={formik.touched.category && Boolean(formik.errors.category)}
+                  helperText={formik.touched.category && formik.errors.category}
                 />
               </Grid>
 
               <Grid item xs={12}  xs={4}>
                 <TextField
-                 inputRef={ageRef}
                   variant="outlined"
-                  required
                   fullWidth
                   id="age"
                   label="Age"
@@ -113,14 +128,16 @@ const AddPetForm = (props) => {
                       root: classes.label
                     }
                   }}
+                  value={formik.values.age}
+                  onChange={formik.handleChange}
+                  error={formik.touched.age && Boolean(formik.errors.age)}
+                  helperText={formik.touched.age && formik.errors.age}
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <TextField
-                 inputRef={photoRef}
                   variant="outlined"
-                  required
                   fullWidth
                   id="photo"
                   label="Photo"
@@ -131,6 +148,10 @@ const AddPetForm = (props) => {
                       root: classes.label
                     }
                   }}
+                  value={formik.values.photo}
+                  onChange={formik.handleChange}
+                  error={formik.touched.photo && Boolean(formik.errors.photo)}
+                  helperText={formik.touched.photo && formik.errors.photo}
                 />
               </Grid>
              
