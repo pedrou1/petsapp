@@ -7,29 +7,7 @@ import {
   Grid,
   Typography
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    form: {
-      width: '100%',
-      marginTop: theme.spacing(3),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-    label: {
-        backgroundColor: "#fafafa",
-        paddingLeft: 6,
-        paddingRight: 8
-      },
-  }));
+import { useStyles } from './styles.js'
 
 const validationSchema = yup.object({
   name: yup
@@ -49,30 +27,50 @@ const validationSchema = yup.object({
   
 const AddPetForm = (props) => {
 
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      category: '',
-      age: '',
-      photo:''
+  let onLoadValues = {};
 
-    },
+  props.item !== undefined ? (  // loads values if editing
+    onLoadValues = {
+    name: props.item.name,
+    category: props.item.category,
+    age: props.item.age,
+    photo: props.item.photo
+    }
+  ) : (
+    onLoadValues = {
+      name: 'test',
+      category: 'test',
+      age: '2',
+      photo: 'https://repuestosmdi.com/wp-content/uploads/2018/10/image.png'
+      }
+  )
+
+  const formik = useFormik({
+    initialValues: onLoadValues,
     validationSchema: validationSchema,
+
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      
+      if(props.item === undefined)
+      {
+        props.onAddPet(values);
+      }
+      else{
+        Object.assign(values, {id: props.item.id});
+      alert('Editing '+JSON.stringify(values, null, 2));
+      props.onEditPet(values);
+      }
     },
   });
 
-    // props.onAddPet(petData);
-
-    const classes = useStyles();
+  const classes = useStyles();
 
     return (
-      <Container component="main" maxWidth="xs">
+      <>
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Add Pet
+          { props.item === undefined ? "Add Pet" : "Edit Pet" }
           </Typography>
            <form className={classes.form} onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
@@ -161,13 +159,12 @@ const AddPetForm = (props) => {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
-            >
-              Add
-            </Button>
+              className={classes.submit}>
+              { props.item === undefined ? "Add" : "Edit" }
+            </Button>;
           </form>
         </div>
-      </Container>
+        </>
     );
 }
  

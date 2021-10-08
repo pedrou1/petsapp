@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState, useEffect } from "react";
 import PetItem from "./PetItem";
 import {
 CssBaseline,
@@ -27,44 +26,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PetList = () => {
+const PetList = (props) => {
   const classes = useStyles();
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadedPets, setLoadedPets] = useState([]);
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetch(
-      'https://petsapp-e73b7-default-rtdb.firebaseio.com/pets.json'
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const pets = [];
-
-        for (const key in data) {
-          const pet = {
-            id: key,
-            ...data[key]
-          };
-
-          pets.push(pet);
-        }
-
-        setIsLoading(false);
-        setLoadedPets(pets);
-      });
-  }, []);
-
-  if (isLoading) {
-    return (
-      <section>
-        <p>Loading</p>
-      </section>
-    );
-  }
-  //positionFixed in navbar
   return (
     <React.Fragment>
       <CssBaseline />
@@ -82,7 +46,7 @@ const PetList = () => {
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
             {
-              loadedPets.map(pet =>
+              props.pets.map(pet =>
                 <PetItem
                   key={pet.id}
                   id={pet.id}

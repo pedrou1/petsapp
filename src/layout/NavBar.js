@@ -9,7 +9,8 @@ import {
   Drawer,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  Grid
 } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
@@ -79,6 +80,8 @@ const NavBar = () => {
                     </List>
                   </div>
                 </Drawer>
+                
+                <Grid item xs />
 
                 <IconButton
                   color="textPrimary"
@@ -101,7 +104,7 @@ const NavBar = () => {
                 <Button variant="text" color="default" component={Link}
                   onClick={() => setAnchorEl(null)}
                   to={process.env.PUBLIC_URL + "/manage-pets"}>
-                  New pet
+                  Manage pets
                 </Button>
               </div>
             )
