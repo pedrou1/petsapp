@@ -1,5 +1,5 @@
 import AddEditPet from './AddEditPet';
-import { useStyles } from './styles.js'
+import { useStyles, loadingBox } from './styles.js'
 import { useState, useEffect } from "react";
 import {
   Button,
@@ -12,8 +12,7 @@ import {
   TableRow,
   Paper,
   Grid,
-  Typography,
-  Box
+  Typography
 } from '@material-ui/core';
   
 const ManagePets = () => {
@@ -26,9 +25,10 @@ const ManagePets = () => {
     const [openForm, setOpenForm] = useState(false);
   
   useEffect(() => { //loads pets
+    if(!openForm){
     setIsLoading(true);
 
-    fetch('https://petsapp-e73b7-default-rtdb.firebaseio.com/pets.json')
+    fetch('')
       .then((response) => {
         return response.json();
       })
@@ -46,24 +46,28 @@ const ManagePets = () => {
         setIsLoading(false);
         setLoadedPets(pets);
       });
-  }, []);
+    }
+  }, [openForm]);
 
   
   let onDeleteItem = (inItem, i) => {
     const pets = [...loadedPets];
     pets.splice(i, 1);
 
-    fetch(`https://petsapp-e73b7-default-rtdb.firebaseio.com/pets/${inItem.id}.json`, {
+    fetch(``, {
       method: 'DELETE',
     })
       .then((res) => {
-        if (res.status >= 200 && res.status < 300) {
-          setLoadedPets(pets);
-          alert('Success')
+        if(window.confirm("Are you sure?")){
+          if (res.status >= 200 && res.status < 300) {
+            setLoadedPets(pets);
+            alert('Success')
+          }
+          else {
+            alert('An error has ocurred')
+          }
         }
-        else {
-          alert('An error has ocurred')
-        }
+        
       })
   }
 
@@ -77,14 +81,8 @@ const classes = useStyles();
 if (isLoading) {
   return (
     <section>
-    <Box mt={15}>
-     <Container maxWidth="sm">
-      <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-        LOADING...
-      </Typography>
-    </Container>
-    </Box>
-  </section>
+      { loadingBox() }
+    </section>
   );
 }
 
@@ -92,7 +90,7 @@ return (
   <>
    <CssBaseline />
   { !openForm ? ( // pet list table
-  <Grid container className={classes.paper}>
+  <Grid data-aos="zoom-in" container className={classes.paper}>
     <Paper className={classes.paper}>
     <Typography component="h1" variant="h5" className={classes.topText}>
           Pet List
@@ -143,7 +141,7 @@ return (
 </Paper>
 </Grid>
   ) : ( // input form
-    <Container component="main" maxWidth="xs">
+    <Container data-aos="zoom-in" component="main" maxWidth="xs">
         <Button
            onClick={() => {
             setOpenForm(false);

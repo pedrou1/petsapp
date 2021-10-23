@@ -31,7 +31,7 @@ const PetItem = (props) => {
   const classes = useStyles();
 
     return (
-        <Grid item key={props.id} xs={12} sm={6} md={4}>
+        <Grid data-aos="zoom-in" item key={props.id} xs={12} sm={6} md={4}>
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.cardMedia}
@@ -40,7 +40,7 @@ const PetItem = (props) => {
                 />
                 <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                        {props.category}
+                        {props.name}
                     </Typography>
                     <Typography>
                         Age: {props.age}

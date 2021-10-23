@@ -1,3 +1,5 @@
-# React & Firebase app
+# React, Firebase & material ui app
 
-App to get familiarized with router, useState and useEffect Hooks
+Pet management.
+
+Demo: https://petsapp-e73b7.web.app/

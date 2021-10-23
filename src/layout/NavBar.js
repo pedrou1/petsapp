@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   AppBar,
   Toolbar,
@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 
-// LOCAL-STYLING
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -31,27 +31,31 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     flex: 1,
   },
+  white: {
+    color: 'white',
+  },
 }));
 
 const NavBar = () => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null); // expands or retracs the mobile bar
-  const open = Boolean(anchorEl);
+  const [anchor, setAnchor] = useState(null); // expands or retracs the mobile bar
+  const open = Boolean(anchor);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // sets media query
   const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchor(event.currentTarget);
   };
 
   return (
     <div className={classes.root}>
-      <AppBar>
+      <AppBar style={{ background: '#212121' }}>
         <Toolbar>
           <Typography
             variant="h5"
             component="p"
-            color="textPrimary"
+            color="primary"
             className={classes.title}
+            style={{ color: 'white' }}
           >
             Pets App
           </Typography>
@@ -66,7 +70,7 @@ const NavBar = () => {
                     keepMounted: true,
                   }}
                 >
-                  <IconButton onClick={() => setAnchorEl(null)} className={classes.menuButton}>
+                  <IconButton onClick={() => setAnchor(null)} className={classes.menuButton}>
                     <CloseIcon />
                   </IconButton>
                   <div>
@@ -75,7 +79,7 @@ const NavBar = () => {
                         <ListItemText primary={"Home"} />
                       </ListItem>
                       <ListItem button component={Link} to={process.env.PUBLIC_URL + "/manage-pets"}>
-                        <ListItemText primary={"New pet"} />
+                        <ListItemText primary={"Manage pet"} />
                       </ListItem>
                     </List>
                   </div>
@@ -84,25 +88,25 @@ const NavBar = () => {
                 <Grid item xs />
 
                 <IconButton
-                  color="textPrimary"
+                  color="primary"
                   className={classes.menuButton}
                   edge="end"
                   aria-label="menu"
                   onClick={handleMenu}
                 >
-                  <MenuIcon />
+                  <MenuIcon className={classes.white} />
                 </IconButton>
               </>
             ) : (
               <div style={{ marginRight: "2rem" }}>
-                <Button variant="text" color="default"
+                <Button variant="text" color="default" className={classes.white} style={{fontSize: '22px',  fontFamily: "PT Sans"}}
                   component={Link}
                   to={process.env.PUBLIC_URL + "/"}
-                  onClick={() => setAnchorEl(null)}>
+                  onClick={() => setAnchor(null)}>
                   Home
                 </Button>
-                <Button variant="text" color="default" component={Link}
-                  onClick={() => setAnchorEl(null)}
+                <Button variant="text" color="default" component={Link} className={classes.white} style={{fontSize: '22px',  fontFamily: "PT Sans"}}
+                  onClick={() => setAnchor(null)}
                   to={process.env.PUBLIC_URL + "/manage-pets"}>
                   Manage pets
                 </Button>

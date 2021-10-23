@@ -7,7 +7,7 @@ const AddPet = (props) => {
 
 
     function addPetHandler(petData) {
-        fetch('https://petsapp-e73b7-default-rtdb.firebaseio.com/pets.json',
+        fetch('',
             {
                 method: 'POST',
                 body: JSON.stringify(petData),
@@ -24,7 +24,7 @@ const AddPet = (props) => {
     }
 
     function updatePetHandler(petData) {
-        fetch(`https://petsapp-e73b7-default-rtdb.firebaseio.com/pets/${petData.id}.json`, {
+        fetch(``, {
             method: "PATCH",
             header: {
                 "Content-Type": "application/json",
@@ -33,6 +33,7 @@ const AddPet = (props) => {
         }).then((response) => {
             if (response.status >= 200 && response.status < 300) {
                 alert('Success');
+                history.replace('/manage-pets');
             }
         }
         );

@@ -27,12 +27,12 @@ const useStyles = makeStyles((theme) => ({
 
 const PetDetails = () => {
     const { id } = useParams();
-    const [pet, setPet] = useState({ photo: 'https://i.pinimg.com/736x/10/b2/f6/10b2f6d95195994fca386842dae53bb2--parabatai-the-circle.jpg' });
+    const [pet, setPet] = useState({ photo: 'https://icon-library.com/images/spinner-icon-gif/spinner-icon-gif-10.jpg' });
     const classes = useStyles();
 
     useEffect(() => {
         fetch(
-            `https://petsapp-e73b7-default-rtdb.firebaseio.com/pets/${id}.json`
+            ``
         ).then((response) => {
             return response.json();
         }).then((data) => {
@@ -41,7 +41,7 @@ const PetDetails = () => {
     }, []);
 
     return (
-        <Box mt={15}>
+        <Box data-aos="zoom-in" mt={15}>
             <Grid container justifyContent="center">
                 <Grid item xs={12} sm={6} md={4}>
                     <Card className={classes.card}>

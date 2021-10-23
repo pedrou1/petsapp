@@ -1,12 +1,15 @@
 import React from 'react';
 import PetItem from "./PetItem";
 import {
-CssBaseline,
-Grid,
-Typography,
-Container,
+  CssBaseline,
+  Grid,
+  Typography,
+  Container,
+  Checkbox,
+  FormControlLabel
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -14,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(12, 0, 4),
+    padding: theme.spacing(6, 0, 4),
   },
   cardGrid: {
     paddingTop: theme.spacing(6),
@@ -24,10 +27,31 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
+  checkBox: {
+    paddingBottom: theme.spacing(2),
+  },
 }));
 
 const PetList = (props) => {
   const classes = useStyles();
+
+  let checkboxes = [{ label: 'Canine' }, { id: 2, label: 'Feline' }]
+
+  const [checkbox, setCheckbox] = useState(['Canine', 'Feline']);
+
+  function handleCheck(id) {
+
+    let found = checkbox.includes(id);
+
+    if (found) {
+      setCheckbox(
+        checkbox.filter(x => x !== id)
+      )
+    } else {
+      setCheckbox([...checkbox, id]
+      )
+    }
+  }
 
   return (
     <React.Fragment>
@@ -35,7 +59,7 @@ const PetList = (props) => {
       <main>
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+            <Typography component="h1" variant="h2" align="center" color="initial" gutterBottom>
               PETS
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
@@ -44,30 +68,44 @@ const PetList = (props) => {
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
+          {
+            checkboxes.map(chbox =>
+              <FormControlLabel control={
+                <Checkbox
+                  label={chbox.label}
+                  onChange={() => handleCheck(chbox.label)}
+                  checked={checkbox.includes(chbox.label)}
+                />}
+                label={chbox.label}
+                className={classes.checkBox} />)
+          }
+
           <Grid container spacing={4}>
             {
-              props.pets.map(pet =>
-                <PetItem
-                  key={pet.id}
-                  id={pet.id}
-                  name={pet.name}
-                  age={pet.age}
-                  category={pet.category}
-                  photo={pet.photo}
-                />
+              props.pets.filter(pet =>
+                checkbox.length !== 2 ? pet.category.includes(checkbox.map(categ => categ)) : pet
               )
+                .map(pet =>
+                  <PetItem
+                    key={pet.id}
+                    id={pet.id}
+                    name={pet.name}
+                    age={pet.age}
+                    category={pet.category}
+                    photo={pet.photo}
+                  />
+                )
             }
           </Grid>
         </Container>
       </main>
       <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Example.
+          Pedro Urrutia
         </Typography>
       </footer>
+      {
+        console.log(checkbox)}
     </React.Fragment>
   );
 }

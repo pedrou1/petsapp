@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import PetList from "./PetList";
-import {
-  Typography,
-  Container,
-  Box
-  } from '@material-ui/core';
+import { loadingBox } from '../managePets/styles.js';
 
 const AllPets = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +9,7 @@ const AllPets = () => {
     useEffect(() => { // loads pets
       setIsLoading(true);
       fetch(
-        'https://petsapp-e73b7-default-rtdb.firebaseio.com/pets.json'
+        ''
       ).then((response) => {
           return response.json();
         }).then((data) => {
@@ -35,13 +31,7 @@ const AllPets = () => {
     if (isLoading) {
       return (
         <section>
-          <Box mt={15}>
-           <Container maxWidth="sm">
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              LOADING...
-            </Typography>
-          </Container>
-          </Box>
+          { loadingBox() }
         </section>
       );
     }
